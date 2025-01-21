@@ -70,6 +70,32 @@ export default function HeroBanner({ title, text }: HeroBannerProps) {
           className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
         />
       </div>
+      <svg
+            viewBox="0 0 1024 1024"
+            aria-hidden="true"
+            className="absolute left-1/2 top-1/2 -z-10 size-[64rem] -translate-x-1/2"
+          >
+            <circle
+              r={512}
+              cx={512}
+              cy={512}
+              fill="url(#759c1415-0410-454c-8f7c-9a820de03641)"
+              fillOpacity="0.7"
+            />
+            <defs>
+              <radialGradient
+                r={1}
+                cx={0}
+                cy={0}
+                id="759c1415-0410-454c-8f7c-9a820de03641"
+                gradientUnits="userSpaceOnUse"
+                gradientTransform="translate(512 512) rotate(90) scale(512)"
+              >
+                <stop stopColor="#7775D6" />
+                <stop offset={1} stopColor="#E935C1" stopOpacity={0} />
+              </radialGradient>
+            </defs>
+          </svg>
     </div>
   );
 }
