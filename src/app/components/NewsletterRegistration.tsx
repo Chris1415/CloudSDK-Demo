@@ -17,7 +17,7 @@ export default function NewsletterRegistration() {
         identifiers: [
           {
             id: mail,
-            provider: "SITECORE_ID",
+            provider: "email",
           },
         ],
       });

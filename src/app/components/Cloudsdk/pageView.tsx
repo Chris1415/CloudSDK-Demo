@@ -2,9 +2,13 @@
 
 import { pageView } from "@sitecore-cloudsdk/events/browser";
 import { CloudSDK } from "@sitecore-cloudsdk/core/browser";
+import "@sitecore-cloudsdk/search/browser";
+import { usePathname } from "next/navigation";
+
 import { useEffect } from "react";
 
 export default function PageView() {
+  const pathName = usePathname();
   useEffect(() => {
     CloudSDK({
       sitecoreEdgeContextId:
@@ -13,6 +17,7 @@ export default function PageView() {
       enableBrowserCookie: true,
     })
       .addEvents() // Initialize the `events` package.
+      .addSearch()
       // .addPersonalize({ enablePersonalizeCookie: true }) // Initialize the `personalize` package.
       .initialize();
 
@@ -20,12 +25,12 @@ export default function PageView() {
     pageView({
       channel: "WEB",
       currency: "USD",
-      page: "/",
+      page: pathName,
       language: "en",
       includeUTMParameters: true,
       // referrer: chosenReferrer,
     });
-  }, []);
+  }, [pathName]);
 
   return <></>;
 }

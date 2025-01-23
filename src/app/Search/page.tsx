@@ -1,14 +1,15 @@
-import { Metadata } from "next";
-import HeroBanner from "../components/HeroBanner";
 import { OpenGraph } from "next/dist/lib/metadata/types/opengraph-types";
+import HeroBanner from "../components/HeroBanner";
+import PreviewSearch from "../components/PreviewSearch";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "News Area",
-  description: "Get all the latest News and find what is interesting for you",
+  title: "Search",
+  description: "Easily find what you need",
   metadataBase: new URL("https://cloud-sdk-demo.vercel.app/"),
   openGraph: {
-    title: "News Area",
-    description: "Get all the latest News and find what is interesting for you",
+    title: "Search",
+    description: "Easily find what you need",
     type: "website",
     url: "https://cloud-sdk-demo.vercel.app/",
     images: [
@@ -22,12 +23,9 @@ export const metadata: Metadata = {
 export default function News() {
   return (
     <div>
-      <HeroBanner
-        title="News Area"
-        text="Get all the latest News and find what is interesting for you"
-      />
+      <HeroBanner title="Search" text="Easily find what you need" />
       <div className="p-6">
-        {/* <Card /> */}
+        <PreviewSearch />
       </div>
 
       {/* <Title /> */}
