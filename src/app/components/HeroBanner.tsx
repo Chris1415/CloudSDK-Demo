@@ -29,7 +29,7 @@ export default function HeroBanner({ Title, Text }: HeroBannerProps) {
         channel: "WEB",
       })) as PersonalizedBannerResult;
 
-      if (data && data.message == "") {
+      if (data) {
         const banner = data.decisionOffers[0];
         setBanner({
           Title:
