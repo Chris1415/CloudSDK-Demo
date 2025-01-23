@@ -1,11 +1,51 @@
+"use client";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import { personalize } from "@sitecore-cloudsdk/personalize/browser";
+import { useEffect, useState } from "react";
 
 interface HeroBannerProps {
-  title: string;
-  text: string;
+  Title: string;
+  Text: string;
 }
 
-export default function HeroBanner({ title, text }: HeroBannerProps) {
+interface PersonalizedBannerResult {
+  decisionOffers: {
+    attributes: HeroBannerProps;
+  }[];
+  FirstName: string;
+  LastName: string;
+  message: string;
+}
+
+export default function HeroBanner({ Title, Text }: HeroBannerProps) {
+  const [banner, setBanner] = useState<HeroBannerProps>({
+    Title: Title,
+    Text: Text,
+  });
+  useEffect(() => {
+    async function triggerPersonalization() {
+      const data = (await personalize({
+        friendlyId: "hahn_demo_banner_homer",
+        channel: "WEB",
+      })) as PersonalizedBannerResult;
+
+      if (data && data.message == "") {
+        const banner = data.decisionOffers[0];
+        setBanner({
+          Title:
+            banner.attributes.Title +
+            " " +
+            data.FirstName +
+            " " +
+            data.LastName,
+          Text: banner.attributes.Text,
+        });
+      }
+    }
+
+    triggerPersonalization();
+  }, []);
+
   return (
     <div className="relative isolate overflow-hidden pt-14">
       <img
@@ -29,8 +69,11 @@ export default function HeroBanner({ title, text }: HeroBannerProps) {
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-400 ring-1 ring-white/10 hover:ring-white/20">
-              Go to our docs to read more {" "}
-              <a href="https://doc.sitecore.com/xmc/en/developers/sdk/004/cloud-sdk/sitecore-cloud-sdk-for-javascript.html" className="font-semibold text-white">
+              Go to our docs to read more{" "}
+              <a
+                href="https://doc.sitecore.com/xmc/en/developers/sdk/004/cloud-sdk/sitecore-cloud-sdk-for-javascript.html"
+                className="font-semibold text-white"
+              >
                 <span aria-hidden="true" className="absolute inset-0" />
                 Read more <span aria-hidden="true">&rarr;</span>
               </a>
@@ -38,11 +81,12 @@ export default function HeroBanner({ title, text }: HeroBannerProps) {
           </div>
           <div className="text-center">
             <h1 className="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl">
-              {title}
+              {banner.Title}
             </h1>
             <p className="mt-8 text-pretty text-lg font-medium text-gray-400 sm:text-xl/8">
-              {text}
+              {banner.Text}
             </p>
+
             <div className="mt-10 flex items-center justify-center gap-x-6 relative">
               <a
                 href="#"
@@ -71,31 +115,31 @@ export default function HeroBanner({ title, text }: HeroBannerProps) {
         />
       </div>
       <svg
-            viewBox="0 0 1024 1024"
-            aria-hidden="true"
-            className="absolute left-1/2 top-1/2 -z-10 size-[64rem] -translate-x-1/2"
+        viewBox="0 0 1024 1024"
+        aria-hidden="true"
+        className="absolute left-1/2 top-1/2 -z-10 size-[64rem] -translate-x-1/2"
+      >
+        <circle
+          r={512}
+          cx={512}
+          cy={512}
+          fill="url(#759c1415-0410-454c-8f7c-9a820de03641)"
+          fillOpacity="0.7"
+        />
+        <defs>
+          <radialGradient
+            r={1}
+            cx={0}
+            cy={0}
+            id="759c1415-0410-454c-8f7c-9a820de03641"
+            gradientUnits="userSpaceOnUse"
+            gradientTransform="translate(512 512) rotate(90) scale(512)"
           >
-            <circle
-              r={512}
-              cx={512}
-              cy={512}
-              fill="url(#759c1415-0410-454c-8f7c-9a820de03641)"
-              fillOpacity="0.7"
-            />
-            <defs>
-              <radialGradient
-                r={1}
-                cx={0}
-                cy={0}
-                id="759c1415-0410-454c-8f7c-9a820de03641"
-                gradientUnits="userSpaceOnUse"
-                gradientTransform="translate(512 512) rotate(90) scale(512)"
-              >
-                <stop stopColor="#7775D6" />
-                <stop offset={1} stopColor="#E935C1" stopOpacity={0} />
-              </radialGradient>
-            </defs>
-          </svg>
+            <stop stopColor="#7775D6" />
+            <stop offset={1} stopColor="#E935C1" stopOpacity={0} />
+          </radialGradient>
+        </defs>
+      </svg>
     </div>
   );
 }
