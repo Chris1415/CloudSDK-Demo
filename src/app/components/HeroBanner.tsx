@@ -10,30 +10,36 @@ import Link from "next/link";
 import useEvents from "../hooks/useEvents";
 
 interface HeroBannerProps {
-  Title: string;
-  Text: string;
+  title: string;
+  text: string;
+  personalizable: boolean
 }
 
 interface PersonalizedBannerResult {
   decisionOffers: {
-    attributes: HeroBannerProps;
+    attributes: {
+      Title: string;
+      Text: string;
+    };
   }[];
   FirstName: string;
   LastName: string;
   message: string;
 }
 
-export default function HeroBanner({ Title, Text }: HeroBannerProps) {
+export default function HeroBanner({ title, text, personalizable  }: HeroBannerProps) {
   const { triggerEvent } = useEvents();
   const router = useRouter();
   const { data } = usePersonalization<PersonalizedBannerResult>(
-    BANNER_PERSONALIZATION_KEY
+    BANNER_PERSONALIZATION_KEY,
+    personalizable
   );
 
   const showPersonalization =
     (data?.decisionOffers?.length ?? 0) > 0 &&
     data?.FirstName &&
-    data?.LastName;
+    data?.LastName &&
+    personalizable;
 
   async function sendEventOnLinkClick(name: string, url: string) {
     triggerEvent(name);
@@ -81,12 +87,12 @@ export default function HeroBanner({ Title, Text }: HeroBannerProps) {
                   data?.FirstName +
                   " " +
                   data?.LastName
-                : Title}
+                : title}
             </h1>
             <p className="mt-8 text-pretty text-lg font-medium text-gray-400 sm:text-xl/8">
               {showPersonalization
                 ? data?.decisionOffers?.[0]?.attributes?.Text
-                : Text}
+                : text}
             </p>
 
             <div className="mt-10 flex items-center justify-center gap-x-6 relative">

@@ -1,19 +1,21 @@
-import { personalize } from '@sitecore-cloudsdk/personalize/browser';
-import { useState, useEffect } from 'react';
-function usePersonalization<T>(friendlyId: string){
+import { personalize } from "@sitecore-cloudsdk/personalize/browser";
+import { useState, useEffect } from "react";
+function usePersonalization<T>(friendlyId: string, personalizeable: boolean) {
   const [data, setData] = useState<T>();
 
   useEffect(() => {
     const doPersonalize = async () => {
-        const personalization = (await personalize({
-            friendlyId: friendlyId,
-            channel: "WEB",
-          }));
+      const personalization = await personalize({
+        friendlyId: friendlyId,
+        channel: "WEB",
+      });
 
-          setData(personalization as T);
+      setData(personalization as T);
     };
-    doPersonalize();
-  }, [friendlyId]);
+    if (personalizeable) {
+      doPersonalize();
+    }
+  }, [friendlyId, personalizeable]);
   return { data };
-};
+}
 export default usePersonalization;

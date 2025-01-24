@@ -23,8 +23,9 @@ export default function News() {
   return (
     <div>
       <HeroBanner
-        Title="News Area"
-        Text="Get all the latest News and find what is interesting for you"
+        title="News Area"
+        text="Get all the latest News and find what is interesting for you"
+        personalizable={false}
       />
       <div className="p-6">
         {/* <Card /> */}

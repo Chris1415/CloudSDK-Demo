@@ -23,7 +23,11 @@ export const metadata: Metadata = {
 export default function News() {
   return (
     <div>
-      <HeroBanner Title="Search" Text="Easily find what you need" />
+      <HeroBanner
+        title="Search"
+        text="Easily find what you need"
+        personalizable={false}
+      />
       <div className="p-6">
         <PreviewSearch />
       </div>
