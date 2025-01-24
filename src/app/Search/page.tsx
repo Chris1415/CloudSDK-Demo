@@ -11,10 +11,10 @@ export const metadata: Metadata = {
     title: "Search",
     description: "Easily find what you need",
     type: "website",
-    url: "https://cloud-sdk-demo.vercel.app/",
+    url: "https://cloud-sdk-demo.vercel.app/Search",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2830&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply",
+        url: "https://fastly.picsum.photos/id/935/1600/800.jpg?hmac=kTnUnbusz7c5qklcH2jySzLjO1Hs71pxV8XU7bYRn_c",
       },
     ],
   } as OpenGraph,

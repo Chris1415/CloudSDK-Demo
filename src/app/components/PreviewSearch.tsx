@@ -7,18 +7,38 @@ import {
   WidgetRequestData,
 } from "@sitecore-cloudsdk/search/browser";
 import { useEffect, useState } from "react";
+import SearchResultCard from "./SearchResultCard";
+
+interface SearchResultData {
+  widgets: {
+    rfk_id: string;
+    type: string;
+    used_in: string;
+    entity: string;
+    content: {
+      description: string;
+      id: string;
+      image_url: string;
+      name: string;
+      source_id: string;
+      title: string;
+      type: string;
+      url: string;
+    }[];
+  }[];
+}
 
 export default function PreviewSearch() {
   // Create a data state variable to store the received data:
-  const [products, setProducts] = useState<unknown[]>([]);
- 
+  const [searchResults, setSearchResults] = useState<SearchResultData>();
+
   // Perform the initial data request:
   useEffect(() => {
     async function fetchData() {
       const widgetRequest = new SearchWidgetItem("content", "cloudsdkdemohahn"); // Create a new widget request
       widgetRequest.content = {}; // Request all attributes for the entity
-      widgetRequest.limit = 10; // Limit the number of results to 10      
-      
+      widgetRequest.limit = 10; // Limit the number of results to 10
+
       // Create a new context with the locale set to "EN" and "us".
       // Depending on your Sitecore Search configuration, using `Context` might be optional:
       const context = new Context({
@@ -30,23 +50,28 @@ export default function PreviewSearch() {
         context
       );
       if (!response) return console.warn("No search results found.");
-      // Set the received data to the state variable:
-      const responseWidget = response.widgets;
-      const currentProducts = responseWidget?.[0]?.content || [];
-      setProducts(currentProducts);
+
+      setSearchResults(response as SearchResultData);
     }
     fetchData();
   }, []);
 
   return (
     <div className="text-white">
-      {products && (
-        <ul className="list-disc p-2">
+      {searchResults && (
+        <div className="grid grid-cols-3">
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          {products.map((product: any) => (
-            <li className="p-2" key={product.id}>{product.name}</li>
+          {searchResults.widgets?.[0]?.content.map((element) => (
+            <SearchResultCard
+              key={element.id}
+              title={element.title}
+              description={element.description}
+              image={element.image_url}
+              link={element.url}
+              type={element.type}
+            />
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

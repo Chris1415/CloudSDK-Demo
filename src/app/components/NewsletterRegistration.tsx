@@ -4,7 +4,7 @@ import { identity } from "@sitecore-cloudsdk/events/browser";
 import { useState } from "react";
 
 export default function NewsletterRegistration() {
-  const [mail, setMail] = useState<string>();
+  const [mail, setMail] = useState<string>("");
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function Register(e: any) {

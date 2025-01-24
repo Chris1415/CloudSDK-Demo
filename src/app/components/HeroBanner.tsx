@@ -1,7 +1,12 @@
 "use client";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { personalize } from "@sitecore-cloudsdk/personalize/browser";
-import { useEffect, useState } from "react";
+import usePersonalization from "../hooks/personalizationHook";
+import { BANNER_PERSONALIZATION_KEY } from "../consts/personalization";
+import { event, EventData } from "@sitecore-cloudsdk/events/browser";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { MouseEvent } from "react";
+import Link from "next/link";
 
 interface HeroBannerProps {
   Title: string;
@@ -18,33 +23,28 @@ interface PersonalizedBannerResult {
 }
 
 export default function HeroBanner({ Title, Text }: HeroBannerProps) {
-  const [banner, setBanner] = useState<HeroBannerProps>({
-    Title: Title,
-    Text: Text,
-  });
-  useEffect(() => {
-    async function triggerPersonalization() {
-      const data = (await personalize({
-        friendlyId: "hahn_demo_banner_homer",
-        channel: "WEB",
-      })) as PersonalizedBannerResult;
+  const pathName = usePathname();
+  const router = useRouter();
+  const { data } = usePersonalization<PersonalizedBannerResult>(
+    BANNER_PERSONALIZATION_KEY
+  );
 
-      if (data) {
-        const banner = data.decisionOffers[0];
-        setBanner({
-          Title:
-            banner.attributes.Title +
-            " " +
-            data.FirstName +
-            " " +
-            data.LastName,
-          Text: banner.attributes.Text,
-        });
-      }
-    }
+  const showPersonalization = (data?.decisionOffers?.length ?? 0) > 0;
 
-    triggerPersonalization();
-  }, []);
+  async function sendEventOnLinkClick(
+    name: string,
+    url: string
+
+  ) {
+    await event({
+      type: name,
+      channel: "WEB",
+      language: "en",
+      page: pathName,
+    } as EventData);
+
+    router.push(url);
+  }
 
   return (
     <div className="relative isolate overflow-hidden pt-14">
@@ -81,20 +81,29 @@ export default function HeroBanner({ Title, Text }: HeroBannerProps) {
           </div>
           <div className="text-center">
             <h1 className="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl">
-              {banner.Title}
+              {showPersonalization
+                ? data?.decisionOffers?.[0]?.attributes?.Title +
+                  " " +
+                  data?.FirstName +
+                  " " +
+                  data?.LastName
+                : Title}
             </h1>
             <p className="mt-8 text-pretty text-lg font-medium text-gray-400 sm:text-xl/8">
-              {banner.Text}
+              {showPersonalization
+                ? data?.decisionOffers?.[0]?.attributes?.Text
+                : Text}
             </p>
 
             <div className="mt-10 flex items-center justify-center gap-x-6 relative">
-              <a
-                href="#"
+              <Link
+                onClick={() => sendEventOnLinkClick("HERO_BANNER_BTN_CLICKED", "/")}
+                href="/"
                 className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
               >
                 Get started{" "}
                 <InformationCircleIcon className="inline-block w-5 h-5 align-top text-white" />
-              </a>
+              </Link>
               <a href="#" className="text-sm/6 font-semibold text-white">
                 Learn more <span aria-hidden="true">→</span>
               </a>
