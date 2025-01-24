@@ -1,7 +1,10 @@
 "use client";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import usePersonalization from "../hooks/usePersonalization";
-import { BANNER_CUSTOM_CLICK_EVENT, BANNER_PERSONALIZATION_KEY } from "../consts/personalization";
+import {
+  BANNER_CUSTOM_CLICK_EVENT,
+  BANNER_PERSONALIZATION_KEY,
+} from "../consts/personalization";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import useEvents from "../hooks/useEvents";
@@ -27,7 +30,10 @@ export default function HeroBanner({ Title, Text }: HeroBannerProps) {
     BANNER_PERSONALIZATION_KEY
   );
 
-  const showPersonalization = (data?.decisionOffers?.length ?? 0) > 0;
+  const showPersonalization =
+    (data?.decisionOffers?.length ?? 0) > 0 &&
+    data?.FirstName &&
+    data?.LastName;
 
   async function sendEventOnLinkClick(name: string, url: string) {
     triggerEvent(name);
