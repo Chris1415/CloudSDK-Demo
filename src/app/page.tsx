@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     url: "https://cloud-sdk-demo.vercel.app/",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2830&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply",
+        url: "https://fastly.picsum.photos/id/985/1600/800.jpg?hmac=hpLNjQPzmBwSt9YEdqTJOmTgpXU6R8mTAnEu2EXpdAs",
       },
     ],
   } as OpenGraph,

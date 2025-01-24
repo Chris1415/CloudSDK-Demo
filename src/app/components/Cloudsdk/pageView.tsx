@@ -1,14 +1,12 @@
 "use client";
 
-import { pageView } from "@sitecore-cloudsdk/events/browser";
 import { CloudSDK } from "@sitecore-cloudsdk/core/browser";
 import "@sitecore-cloudsdk/search/browser";
-import { usePathname } from "next/navigation";
-
 import { useEffect } from "react";
+import useEvents from "@/app/hooks/useEvents";
 
 export default function PageView() {
-  const pathName = usePathname();
+  const { triggerPageViewEvent } = useEvents();
   useEffect(() => {
     CloudSDK({
       sitecoreEdgeContextId:
@@ -17,20 +15,16 @@ export default function PageView() {
       enableBrowserCookie: true,
     })
       .addEvents() // Initialize the `events` package.
-      .addSearch()
-      .addPersonalize({ enablePersonalizeCookie: true }) // Initialize the `personalize` package.
+      .addSearch() // Inititalize the 'search' package
+      .addPersonalize({
+        enablePersonalizeCookie: true,
+        webPersonalization: true,
+      }) // Initialize the `personalize` package.
       .initialize();
 
     // Send VIEW event:
-    pageView({
-      channel: "WEB",
-      currency: "USD",
-      page: pathName,
-      language: "en",
-      includeUTMParameters: true,
-      // referrer: chosenReferrer,
-    });
-  }, [pathName]);
+    triggerPageViewEvent("VIEW");
+  }, []);
 
   return <></>;
 }

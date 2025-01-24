@@ -1,11 +1,10 @@
 "use client";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import usePersonalization from "../hooks/personalizationHook";
+import usePersonalization from "../hooks/usePersonalization";
 import { BANNER_PERSONALIZATION_KEY } from "../consts/personalization";
-import { event, EventData } from "@sitecore-cloudsdk/events/browser";
-import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import useEvents from "../hooks/useEvents";
 
 interface HeroBannerProps {
   Title: string;
@@ -22,7 +21,7 @@ interface PersonalizedBannerResult {
 }
 
 export default function HeroBanner({ Title, Text }: HeroBannerProps) {
-  const pathName = usePathname();
+  const { triggerEvent } = useEvents();
   const router = useRouter();
   const { data } = usePersonalization<PersonalizedBannerResult>(
     BANNER_PERSONALIZATION_KEY
@@ -30,18 +29,8 @@ export default function HeroBanner({ Title, Text }: HeroBannerProps) {
 
   const showPersonalization = (data?.decisionOffers?.length ?? 0) > 0;
 
-  async function sendEventOnLinkClick(
-    name: string,
-    url: string
-
-  ) {
-    await event({
-      type: name,
-      channel: "WEB",
-      language: "en",
-      page: pathName,
-    } as EventData);
-
+  async function sendEventOnLinkClick(name: string, url: string) {
+    triggerEvent(name);
     router.push(url);
   }
 
@@ -96,7 +85,9 @@ export default function HeroBanner({ Title, Text }: HeroBannerProps) {
 
             <div className="mt-10 flex items-center justify-center gap-x-6 relative">
               <Link
-                onClick={() => sendEventOnLinkClick("HERO_BANNER_BTN_CLICKED", "/")}
+                onClick={() =>
+                  sendEventOnLinkClick("HERO_BANNER_BTN_CLICKED", "/")
+                }
                 href="/"
                 className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
               >
