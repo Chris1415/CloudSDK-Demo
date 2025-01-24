@@ -5,7 +5,6 @@ import { BANNER_PERSONALIZATION_KEY } from "../consts/personalization";
 import { event, EventData } from "@sitecore-cloudsdk/events/browser";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { MouseEvent } from "react";
 import Link from "next/link";
 
 interface HeroBannerProps {
