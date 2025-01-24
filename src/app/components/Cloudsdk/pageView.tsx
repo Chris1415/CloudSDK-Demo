@@ -18,7 +18,7 @@ export default function PageView() {
       .addSearch() // Inititalize the 'search' package
       .addPersonalize({
         enablePersonalizeCookie: true,
-        webPersonalization: true,
+        webPersonalization: false,
       }) // Initialize the `personalize` package.
       .initialize();
 

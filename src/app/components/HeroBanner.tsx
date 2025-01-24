@@ -1,7 +1,7 @@
 "use client";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import usePersonalization from "../hooks/usePersonalization";
-import { BANNER_PERSONALIZATION_KEY } from "../consts/personalization";
+import { BANNER_CUSTOM_CLICK_EVENT, BANNER_PERSONALIZATION_KEY } from "../consts/personalization";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import useEvents from "../hooks/useEvents";
@@ -86,10 +86,10 @@ export default function HeroBanner({ Title, Text }: HeroBannerProps) {
             <div className="mt-10 flex items-center justify-center gap-x-6 relative">
               <Link
                 onClick={() =>
-                  sendEventOnLinkClick("HERO_BANNER_BTN_CLICKED", "/")
+                  sendEventOnLinkClick(BANNER_CUSTOM_CLICK_EVENT, "/")
                 }
                 href="/"
-                className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
+                className="rounded-md bg-indigo-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
               >
                 Get started{" "}
                 <InformationCircleIcon className="inline-block w-5 h-5 align-top text-white" />

@@ -19,7 +19,7 @@ export default function NewsletterRegistration() {
         identifiers: [
           {
             id: mail,
-            provider: "email",
+            provider: process?.env?.NEXT_PUBLIC_IDENTITY_PROVIDER ?? "",
           },
         ],
       });
