@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  InformationCircleIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -23,11 +27,7 @@ export default function Header() {
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img
-                alt=""
-                src="/logoMobile.png"
-                className="h-8 w-auto"
-              />
+              <img alt="" src="/logoMobile.png" className="h-8 w-auto" />
             </a>
           </div>
           <div className="flex lg:hidden">
@@ -45,9 +45,10 @@ export default function Header() {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-sm/6 font-semibold text-white"
+                className="text-sm/6 font-semibold text-white hover:text-indigo-400"
               >
-                {item.name}
+                {item.name}{" "}
+                <InformationCircleIcon className="inline-block w-5 h-5 align-top text-white" />
               </a>
             ))}
           </div>
@@ -92,6 +93,7 @@ export default function Header() {
                       className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800"
                     >
                       {item.name}
+                      <InformationCircleIcon className="inline-block w-5 h-5 align-top text-white" />
                     </a>
                   ))}
                 </div>

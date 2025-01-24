@@ -5,6 +5,8 @@ import { useState } from "react";
 
 export default function NewsletterRegistration() {
   const [mail, setMail] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function Register(e: any) {
@@ -12,8 +14,8 @@ export default function NewsletterRegistration() {
     if (mail) {
       identity({
         email: mail,
-        firstName: "Christian",
-        lastName: "Hahn",
+        firstName: firstName,
+        lastName: lastName,
         identifiers: [
           {
             id: mail,
@@ -35,7 +37,26 @@ export default function NewsletterRegistration() {
             You can easily register with your eamil to always get all the latest
             information
           </p>
-          <form className="mx-auto mt-10 flex max-w-md gap-x-4">
+          <form className="mx-auto mt-10 flex max-w-4xl gap-x-4">
+            <input
+              id="firstName"
+              name="firstName"
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="First Name"
+              className="min-w-0 flex-auto rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-white sm:text-sm/6"
+            />
+            <input
+              id="lastName"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              name="lastName"
+              type="text"
+              placeholder="Last Name"
+              className="min-w-0 flex-auto rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-white sm:text-sm/6"
+            />
+
             <label htmlFor="email-address" className="sr-only">
               Email address
             </label>
@@ -46,7 +67,7 @@ export default function NewsletterRegistration() {
               value={mail}
               onChange={(e) => setMail(e.target.value)}
               required
-              placeholder="Enter your email"
+              placeholder="Email"
               autoComplete="email"
               className="min-w-0 flex-auto rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-white sm:text-sm/6"
             />
