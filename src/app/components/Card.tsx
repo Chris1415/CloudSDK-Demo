@@ -1,13 +1,56 @@
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
+"use client";
+import usePersonalization from "../hooks/usePersonalization";
+import {
+  CARD_CUSTOM_CLICK_EVENT,
+  CARD_PERSONALIZATION_KEY,
+  EMAIL_TOKEN,
+  FIRST_NAME_TOKEN,
+  LAST_NAME_TOKEN,
+  NUMBER_SESSIONS_TOKEN,
+} from "../consts/personalization";
+import TrackedLink from "./TrackedLink";
 
 interface CardProps {
   superTitle: string;
   title: string;
   text: string;
   buttonText: string;
+  personalizable: boolean;
 }
 
-export default function Card({ superTitle, title, text, buttonText }: CardProps) {
+interface PersonalizedCardResult {
+  decisionOffers: {
+    attributes: {
+      Title: string;
+      Text: string;
+      Subtitle: string;
+    };
+  }[];
+  FirstName: string;
+  LastName: string;
+  Email: string;
+  message: string;
+  NumberSessions: string;
+}
+
+export default function Card({
+  superTitle,
+  title,
+  text,
+  buttonText,
+  personalizable,
+}: CardProps) {
+  const { data } = usePersonalization<PersonalizedCardResult>(
+    CARD_PERSONALIZATION_KEY,
+    personalizable
+  );
+
+  const showPersonalization =
+    (data?.decisionOffers?.length ?? 0) > 0 &&
+    data?.FirstName &&
+    data?.LastName &&
+    personalizable;
+
   return (
     <div className="relative bg-gray-900">
       <div className="relative h-80 overflow-hidden bg-indigo-600 md:absolute md:left-0 md:h-full md:w-1/3 lg:w-1/2">
@@ -44,20 +87,36 @@ export default function Card({ superTitle, title, text, buttonText }: CardProps)
       <div className="relative mx-auto max-w-7xl py-24 sm:py-32 lg:px-8 lg:py-40">
         <div className="pl-6 pr-6 md:ml-auto md:w-2/3 md:pl-16 lg:w-1/2 lg:pl-24 lg:pr-0 xl:pl-32">
           <h2 className="text-base/7 font-semibold text-indigo-400">
-            {superTitle}
+            {showPersonalization
+              ? data?.decisionOffers?.[0]?.attributes?.Subtitle.replace(
+                  EMAIL_TOKEN,
+                  data?.Email
+                )
+              : superTitle}
           </h2>
           <p className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-            {title}
+            {showPersonalization
+              ? data?.decisionOffers?.[0]?.attributes?.Title.replace(
+                  FIRST_NAME_TOKEN,
+                  data?.FirstName
+                ).replace(LAST_NAME_TOKEN, data?.LastName)
+              : title}
           </p>
-          <p className="mt-6 text-base/7 text-gray-300">{text}</p>
+          <p className="mt-6 text-base/7 text-gray-300">
+            {" "}
+            {showPersonalization
+              ? data?.decisionOffers?.[0]?.attributes?.Text.replace(
+                  NUMBER_SESSIONS_TOKEN,
+                  data?.NumberSessions
+                )
+              : text}
+          </p>
           <div className="mt-8">
-            <a
-              href="#"
-              className="inline-flex rounded-md bg-white/10 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              {buttonText}{" "}
-              <InformationCircleIcon className="inline-block w-5 h-5 ml-1 align-top text-white" />
-            </a>
+            <TrackedLink
+              eventName={CARD_CUSTOM_CLICK_EVENT}
+              text={buttonText}
+              href="/"
+            />
           </div>
         </div>
       </div>

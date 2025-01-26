@@ -1,18 +1,17 @@
 "use client";
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import usePersonalization from "../hooks/usePersonalization";
 import {
   BANNER_CUSTOM_CLICK_EVENT,
   BANNER_PERSONALIZATION_KEY,
+  FIRST_NAME_TOKEN,
+  LAST_NAME_TOKEN,
 } from "../consts/personalization";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import useEvents from "../hooks/useEvents";
+import TrackedLink from "./TrackedLink";
 
 interface HeroBannerProps {
   title: string;
   text: string;
-  personalizable: boolean
+  personalizable: boolean;
 }
 
 interface PersonalizedBannerResult {
@@ -27,9 +26,11 @@ interface PersonalizedBannerResult {
   message: string;
 }
 
-export default function HeroBanner({ title, text, personalizable  }: HeroBannerProps) {
-  const { triggerEvent } = useEvents();
-  const router = useRouter();
+export default function HeroBanner({
+  title,
+  text,
+  personalizable,
+}: HeroBannerProps) {
   const { data } = usePersonalization<PersonalizedBannerResult>(
     BANNER_PERSONALIZATION_KEY,
     personalizable
@@ -40,11 +41,6 @@ export default function HeroBanner({ title, text, personalizable  }: HeroBannerP
     data?.FirstName &&
     data?.LastName &&
     personalizable;
-
-  async function sendEventOnLinkClick(name: string, url: string) {
-    triggerEvent(name);
-    router.push(url);
-  }
 
   return (
     <div className="relative isolate overflow-hidden pt-14">
@@ -82,11 +78,10 @@ export default function HeroBanner({ title, text, personalizable  }: HeroBannerP
           <div className="text-center">
             <h1 className="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl">
               {showPersonalization
-                ? data?.decisionOffers?.[0]?.attributes?.Title +
-                  " " +
-                  data?.FirstName +
-                  " " +
-                  data?.LastName
+                ? data?.decisionOffers?.[0]?.attributes?.Title.replace(
+                    FIRST_NAME_TOKEN,
+                    data?.FirstName
+                  ).replace(LAST_NAME_TOKEN, data?.LastName)
                 : title}
             </h1>
             <p className="mt-8 text-pretty text-lg font-medium text-gray-400 sm:text-xl/8">
@@ -96,16 +91,11 @@ export default function HeroBanner({ title, text, personalizable  }: HeroBannerP
             </p>
 
             <div className="mt-10 flex items-center justify-center gap-x-6 relative">
-              <Link
-                onClick={() =>
-                  sendEventOnLinkClick(BANNER_CUSTOM_CLICK_EVENT, "/")
-                }
+              <TrackedLink
+                eventName={BANNER_CUSTOM_CLICK_EVENT}
+                text={"Get started"}
                 href="/"
-                className="rounded-md bg-indigo-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
-              >
-                Get started{" "}
-                <InformationCircleIcon className="inline-block w-5 h-5 align-top text-white" />
-              </Link>
+              />
               <a href="#" className="text-sm/6 font-semibold text-white">
                 Learn more <span aria-hidden="true">→</span>
               </a>

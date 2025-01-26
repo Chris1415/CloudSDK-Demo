@@ -31,14 +31,15 @@ export default async function Home() {
         personalizable={true}
       />
       <div className="p-6">
+        <FeatureList />
         <Card
+          personalizable={true} 
           title="Get started by browsing around"
           superTitle="Guided Tour"
           buttonText="Trigger your first event"
           text="While browsing through this page you will see all kinds of functionalities available in the Cloud SDK. You will be told about each and every functionality as soon as you hit it"
         />
         <NewsletterRegistration />
-        <FeatureList />
       </div>
     </div>
   );
