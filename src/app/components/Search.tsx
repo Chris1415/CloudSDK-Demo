@@ -29,7 +29,7 @@ interface SearchResultData {
   }[];
 }
 
-export default function PreviewSearch() {
+export default function Search() {
   // Create a data state variable to store the received data:
   const [searchResults, setSearchResults] = useState<SearchResultData>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -41,7 +41,6 @@ export default function PreviewSearch() {
       const widgetRequest = new SearchWidgetItem("content", "cloudsdkdemohahn"); // Create a new widget request
       widgetRequest.content = {}; // Request all attributes for the entity
       widgetRequest.limit = 10; // Limit the number of results to 10
-
       // Create a new context with the locale set to "EN" and "us".
       // Depending on your Sitecore Search configuration, using `Context` might be optional:
       const context = new Context({

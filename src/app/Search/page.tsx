@@ -1,6 +1,6 @@
 import { OpenGraph } from "next/dist/lib/metadata/types/opengraph-types";
 import HeroBanner from "../components/HeroBanner";
-import PreviewSearch from "../components/PreviewSearch";
+import Search from "../components/Search";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default function News() {
         personalizable={false}
       />
       <div className="p-6">
-        <PreviewSearch />
+        <Search />
       </div>
 
       {/* <Title /> */}
