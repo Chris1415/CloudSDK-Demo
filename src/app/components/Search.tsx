@@ -66,7 +66,7 @@ export default function Search() {
       </h2>
       {isLoading ? <Spinner /> : <></>}
       {searchResults && (
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-4">
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           {searchResults.widgets?.[0]?.content.map((element) => (
             <SearchResultCard
