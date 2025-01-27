@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog, DialogPanel } from "@headlessui/react";
+import { Button, Dialog, DialogPanel } from "@headlessui/react";
 import {
   Bars3Icon,
   InformationCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import ResetSessionButton from "./ResetSessionButton";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -61,9 +62,7 @@ export default function Header() {
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="#" className="text-sm/6 font-semibold text-white">
-              Log in <span aria-hidden="true">&rarr;</span>
-            </a>
+            <ResetSessionButton />
           </div>
         </nav>
         <Dialog
