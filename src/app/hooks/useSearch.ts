@@ -34,11 +34,10 @@ function useSearch(query: string) {
 
   useEffect(() => {
     async function fetchData() {
-      setIsLoading(true);
       const widgetRequest = new SearchWidgetItem("content", "cloudsdkdemohahn"); // Create a new widget request
       widgetRequest.content = {}; // Request all attributes for the entity
       widgetRequest.limit = 10; // Limit the number of results to 10
-      if (query) {
+      if (query && query.length >= 3) {
         widgetRequest.query = {
           keyphrase: query,
         };
@@ -49,6 +48,8 @@ function useSearch(query: string) {
       const context = new Context({
         locale: { language: "EN", country: "us" },
       });
+
+      setIsLoading(true);
       // Call the `getWidgetData` function with the widget request and the context to request the data:
       const response = await getWidgetData(
         new WidgetRequestData([widgetRequest]),
@@ -66,6 +67,7 @@ function useSearch(query: string) {
         entities: [],
       });
     }
+
     fetchData();
   }, [pathName, query]);
   return { data, isLoading };
