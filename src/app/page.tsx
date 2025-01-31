@@ -28,7 +28,7 @@ export default async function Home() {
       <HeroBanner
         title="Welcome to my Sitecore Cloud SDK Demo Application"
         text="This demo gives you an idea, of how Sitecore Cloud SDK works and how it can be used"
-        personalizable={true}
+        personalizable={false}
       />
       <div className="p-6">
         <FeatureList />
