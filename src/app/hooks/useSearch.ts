@@ -4,6 +4,8 @@ import {
   getWidgetData,
   WidgetRequestData,
   widgetView,
+  SearchSuggestionOptions,
+  SearchEventEntity,
 } from "@sitecore-cloudsdk/search/browser";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -14,6 +16,12 @@ interface SearchResultData {
     type: string;
     used_in: string;
     entity: string;
+    suggestion: {
+      [key: string]: Array<{
+        text: string;
+        freq: number;
+      }>;
+    };
     content: {
       description: string;
       id: string;
@@ -27,6 +35,9 @@ interface SearchResultData {
   }[];
 }
 
+export const SUGGESION_KEY = "auto_named_suggester_4";
+export const WIDGET_ID = "cloudsdkdemohahn";
+
 function useSearch(query: string) {
   const [data, setData] = useState<SearchResultData>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -34,9 +45,14 @@ function useSearch(query: string) {
 
   useEffect(() => {
     async function fetchData() {
-      const widgetRequest = new SearchWidgetItem("content", "cloudsdkdemohahn"); // Create a new widget request
+      const suggesions = {
+        name: SUGGESION_KEY,
+        max: 5,
+      } as SearchSuggestionOptions;
+      const widgetRequest = new SearchWidgetItem("content", WIDGET_ID); // Create a new widget request
       widgetRequest.content = {}; // Request all attributes for the entity
       widgetRequest.limit = 10; // Limit the number of results to 10
+      widgetRequest.suggestion = [suggesions];
       if (query && query.length >= 3) {
         widgetRequest.query = {
           keyphrase: query,
@@ -57,14 +73,22 @@ function useSearch(query: string) {
       );
       if (!response) return console.warn("No search results found.");
 
-      setData(response as SearchResultData);
+      const mappedResponse = response as SearchResultData;
+      setData(mappedResponse);
       setIsLoading(false);
 
       widgetView({
         pathname: pathName,
-        widgetId: "cloudsdkdemohahn",
-        request: {},
-        entities: [],
+        widgetId: WIDGET_ID,
+        request: { keyword: query },
+        entities:
+          mappedResponse.widgets[0]?.content?.map((element) => {
+            const result = {
+              entity: element.type,
+              id: element.id,
+            } as SearchEventEntity;
+            return result;
+          }) ?? ([] as SearchEventEntity[]),
       });
     }
 
