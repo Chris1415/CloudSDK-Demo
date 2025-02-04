@@ -5,11 +5,22 @@ export interface SearchResultElement extends StandardSearchResultElement {
   source_id: string;
   title: string;
   url: string;
+  tags: string;
 }
 
 export interface StandardSearchResultElement {
   id: string;
   type: string;
+}
+
+interface Facet {
+    name: string;
+    label: string;
+    value: {
+        id: string;
+        text: string;
+        count: number;
+    }[]
 }
 
 export interface SearchResult<T> {
@@ -24,4 +35,5 @@ export interface SearchResult<T> {
     }>;
   };
   content: T[];
+  facet?: Facet[];
 }

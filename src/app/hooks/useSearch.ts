@@ -37,6 +37,7 @@ function useSearch<
           keyphrase: query,
         };
       }
+      widgetRequest.facet = { all: true, types: [{ name: "tags" }] };
 
       // Create a new context with the locale set to "EN" and "us".
       // Depending on your Sitecore Search configuration, using `Context` might be optional:
