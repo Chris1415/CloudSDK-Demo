@@ -6,11 +6,12 @@ import useSearch, { SUGGESION_KEY, WIDGET_ID } from "../hooks/useSearch";
 import { useState } from "react";
 import { widgetSuggestionClick } from "@sitecore-cloudsdk/search/browser";
 import { usePathname } from "next/navigation";
+import { SearchResult, SearchResultElement } from "../types/search";
 
 export default function Search() {
   const [query, setQuery] = useState<string>("");
   const [queryField, setQueryField] = useState<string>("");
-  const { data, isLoading } = useSearch(query);
+  const { data, isLoading } = useSearch<SearchResult<SearchResultElement>, SearchResultElement>(query);
   const pathName = usePathname();
 
   async function handleFieldChange(val: string) {
@@ -53,16 +54,16 @@ export default function Search() {
         <p className="text-gray-400 text-sm pl-2 pt-1">
           Enter more than 3 characters to trigger search...
         </p>
-        {!isLoading && (data?.widgets?.[0]?.content?.length ?? 0) == 0 ? (
+        {!isLoading && (data?.content?.length ?? 0) == 0 ? (
           <>
             <div className="pl-2 pt-6">
               <div className="inline-block"> Sorry no results...</div>
               <div></div>
-              {(data?.widgets?.[0]?.suggestion?.[SUGGESION_KEY]?.length ?? 0) >
+              {(data?.suggestion?.[SUGGESION_KEY]?.length ?? 0) >
               0 ? (
                 <div className="inline-block">
                   Did you mean{" "}
-                  {data?.widgets?.[0]?.suggestion?.[SUGGESION_KEY]?.map(
+                  {data?.suggestion?.[SUGGESION_KEY]?.map(
                     (element) => {
                       return (
                         <>
@@ -97,7 +98,7 @@ export default function Search() {
       ) : (
         data && (
           <div className="grid grid-cols-4">
-            {data?.widgets?.[0]?.content?.map((element) => (
+            {data?.content?.map((element) => (
               <SearchResultCard
                 key={element.id}
                 title={element.title}

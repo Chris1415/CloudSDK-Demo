@@ -9,37 +9,16 @@ import {
 } from "@sitecore-cloudsdk/search/browser";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-
-interface SearchResultData {
-  widgets: {
-    rfk_id: string;
-    type: string;
-    used_in: string;
-    entity: string;
-    suggestion: {
-      [key: string]: Array<{
-        text: string;
-        freq: number;
-      }>;
-    };
-    content: {
-      description: string;
-      id: string;
-      image_url: string;
-      name: string;
-      source_id: string;
-      title: string;
-      type: string;
-      url: string;
-    }[];
-  }[];
-}
+import { SearchResult, StandardSearchResultElement } from "../types/search";
 
 export const SUGGESION_KEY = "auto_named_suggester_4";
 export const WIDGET_ID = "cloudsdkdemohahn";
 
-function useSearch(query: string) {
-  const [data, setData] = useState<SearchResultData>();
+function useSearch<
+  T extends SearchResult<U>,
+  U extends StandardSearchResultElement
+>(query: string) {
+  const [data, setData] = useState<T>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const pathName = usePathname();
 
@@ -73,8 +52,8 @@ function useSearch(query: string) {
       );
       if (!response) return console.warn("No search results found.");
 
-      const mappedResponse = response as SearchResultData;
-      setData(mappedResponse);
+      const mappedSearchResult = response.widgets[0] as T;
+      setData(mappedSearchResult);
       setIsLoading(false);
 
       widgetView({
@@ -82,7 +61,7 @@ function useSearch(query: string) {
         widgetId: WIDGET_ID,
         request: { keyword: query },
         entities:
-          mappedResponse.widgets[0]?.content?.map((element) => {
+          mappedSearchResult?.content?.map((element) => {
             const result = {
               entity: element.type,
               id: element.id,

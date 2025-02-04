@@ -9,12 +9,15 @@ import {
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import ResetSessionButton from "./ResetSessionButton";
+import PopoverEntry from "./PopoverEntry";
 
 const navigation = [
   { name: "Home", href: "/" },
   { name: "News", href: "/News" },
   { name: "Search", href: "/Search" },
   { name: "Contact", href: "/Contact" },
+  { name: "About", href: "/About" },
+  { name: "Future", href: "/Future" },
 ];
 
 export default function Header() {
