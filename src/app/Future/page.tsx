@@ -6,6 +6,7 @@ const headline = "Future";
 const text = "Learn what will come next";
 export const metadata: Metadata = {
   title: headline,
+  keywords: "content",
   description: text,
   metadataBase: new URL("https://cloud-sdk-demo.vercel.app/"),
   openGraph: {

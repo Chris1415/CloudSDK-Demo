@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Cloud SDK Demo",
   description: "Welcome to my Sitecore Cloud SDK Demo Application",
   metadataBase: new URL("https://cloud-sdk-demo.vercel.app/"),
+  keywords: "content",
   openGraph: {
     title: "Cloud SDK Demo",
     description: "Welcome to my Sitecore Cloud SDK Demo Application",

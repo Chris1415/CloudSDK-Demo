@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "News Area",
   description: "Get all the latest News and find what is interesting for you",
   metadataBase: new URL("https://cloud-sdk-demo.vercel.app/"),
+  keywords: "news",
   openGraph: {
     title: "News Area",
     description: "Get all the latest News and find what is interesting for you",
