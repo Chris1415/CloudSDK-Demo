@@ -14,13 +14,13 @@ export interface StandardSearchResultElement {
 }
 
 interface Facet {
-    name: string;
-    label: string;
-    value: {
-        id: string;
-        text: string;
-        count: number;
-    }[]
+  name: string;
+  label: string;
+  value: {
+    id: string;
+    text: string;
+    count: number;
+  }[];
 }
 
 export interface SearchResult<T> {
@@ -36,4 +36,8 @@ export interface SearchResult<T> {
   };
   content: T[];
   facet?: Facet[];
+}
+
+export interface SearchFacet {
+  [key: string]: string[];
 }

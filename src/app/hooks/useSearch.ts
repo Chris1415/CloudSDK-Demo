@@ -6,10 +6,15 @@ import {
   widgetView,
   SearchSuggestionOptions,
   SearchEventEntity,
+  ListFilter,
 } from "@sitecore-cloudsdk/search/browser";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { SearchResult, StandardSearchResultElement } from "../types/search";
+import {
+  SearchFacet,
+  SearchResult,
+  StandardSearchResultElement,
+} from "../types/search";
 
 export const SUGGESION_KEY = "auto_named_suggester_4";
 export const WIDGET_ID = "cloudsdkdemohahn";
@@ -17,7 +22,7 @@ export const WIDGET_ID = "cloudsdkdemohahn";
 function useSearch<
   T extends SearchResult<U>,
   U extends StandardSearchResultElement
->(query: string) {
+>(query: string, inputFilter: SearchFacet) {
   const [data, setData] = useState<T>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const pathName = usePathname();
@@ -38,6 +43,21 @@ function useSearch<
         };
       }
       widgetRequest.facet = { all: true, types: [{ name: "tags" }] };
+
+      if (Object.keys(inputFilter).length == 1) {
+        const key = Object.keys(inputFilter)[0];
+        const firstFilter = inputFilter[key];
+        const filter = new ListFilter(key, "allOf", firstFilter);
+        if (firstFilter.length > 0) {
+          widgetRequest.filter = filter;
+        }
+      }
+
+      if (Object.keys(inputFilter).length >= 2) {
+        /* DO SOME MAGIC
+        const filter = [] as ComparisonFilter[];
+        const filterContainer = new LogicalFilter("or", filter);*/
+      }
 
       // Create a new context with the locale set to "EN" and "us".
       // Depending on your Sitecore Search configuration, using `Context` might be optional:
@@ -73,7 +93,7 @@ function useSearch<
     }
 
     fetchData();
-  }, [pathName, query]);
+  }, [inputFilter, pathName, query]);
   return { data, isLoading };
 }
 export default useSearch;
