@@ -25,7 +25,7 @@ export default function PageView() {
 
     // Send VIEW event:
     triggerPageViewEvent("VIEW");
-  }, [triggerPageViewEvent]);
+  }, []);
 
   return <></>;
 }
