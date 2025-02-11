@@ -5,12 +5,16 @@ function usePersonalization<T>(friendlyId: string, personalizeable: boolean) {
 
   useEffect(() => {
     const doPersonalize = async () => {
-      const personalization = await personalize({
-        friendlyId: friendlyId,
-        channel: "WEB",
-      });
-
-      setData(personalization as T);
+      try {
+        const personalization = await personalize({
+          friendlyId: friendlyId,
+          channel: "WEB",
+        });
+        setData(personalization as T);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (e: any) {
+        console.log("Personalization failed..." + e.message);
+      }
     };
     if (personalizeable) {
       doPersonalize();
