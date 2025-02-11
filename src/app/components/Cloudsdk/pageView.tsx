@@ -19,7 +19,7 @@ export default function PageView() {
       .addSearch() // Inititalize the 'search' package
       .addPersonalize({
         enablePersonalizeCookie: true,
-        webPersonalization: false,
+        webPersonalization: true,
       }) // Initialize the `personalize` package.
       .initialize();
 

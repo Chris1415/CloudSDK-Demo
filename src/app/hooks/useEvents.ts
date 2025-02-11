@@ -1,28 +1,18 @@
-import { EventData, event, pageView } from "@sitecore-cloudsdk/events/browser";
+import { EventData, pageView } from "@sitecore-cloudsdk/events/browser";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { CHANNEL, LANGUAGE, VIEW_EVENT } from "../consts/personalization";
 function useEvents() {
-  const [eventName, triggerEvent] = useState<string>();
+  const [triggerEvent] = useState<string>();
   const [pageViewEventName, triggerPageViewEvent] = useState<string>();
   const pathName = usePathname();
 
   useEffect(() => {
-    if (eventName) {
-      event({
-        type: eventName,
-        channel: "WEB",
-        language: "en",
-        page: pathName,
-      } as EventData);
-    }
-  }, [eventName, pathName]);
-
-  useEffect(() => {
     if (pageViewEventName) {
       pageView({
-        type: pageViewEventName,
-        channel: "WEB",
-        language: "en",
+        type: VIEW_EVENT,
+        channel: CHANNEL,
+        language: LANGUAGE,
         page: pathName,
       } as EventData);
     }

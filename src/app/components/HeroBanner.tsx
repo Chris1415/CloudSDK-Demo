@@ -6,7 +6,7 @@ import {
   FIRST_NAME_TOKEN,
   LAST_NAME_TOKEN,
 } from "../consts/personalization";
-import TrackedLink from "./TrackedLink";
+import TrackedLink from "./TrackableLink";
 
 interface HeroBannerProps {
   title: string;

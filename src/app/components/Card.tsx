@@ -8,7 +8,7 @@ import {
   LAST_NAME_TOKEN,
   NUMBER_SESSIONS_TOKEN,
 } from "../consts/personalization";
-import TrackedLink from "./TrackedLink";
+import TrackedLink from "./TrackableLink";
 
 interface CardProps {
   superTitle: string;

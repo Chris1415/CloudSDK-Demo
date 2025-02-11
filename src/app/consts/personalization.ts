@@ -8,3 +8,7 @@ export const FIRST_NAME_TOKEN = "{FIRSTNAME}";
 export const LAST_NAME_TOKEN = "{LASTNAME}";
 export const EMAIL_TOKEN = "{EMAIL}";
 export const NUMBER_SESSIONS_TOKEN = "{NUMBER_SESSION}";
+
+export const CHANNEL = "WEB";
+export const LANGUAGE = "en";
+export const VIEW_EVENT = "VIEW"

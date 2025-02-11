@@ -9,24 +9,24 @@ export default function NewsletterRegistration() {
   const [lastName, setLastName] = useState<string>("");
   const [formSent, setFormSent] = useState<boolean>();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function Register() {
     if (firstName == "" || lastName == "" || mail == "") {
       return;
     }
-    if (mail) {
-      identity({
-        email: mail,
-        firstName: firstName,
-        lastName: lastName,
-        identifiers: [
-          {
-            id: mail,
-            provider: process?.env?.NEXT_PUBLIC_IDENTITY_PROVIDER ?? "",
-          },
-        ],
-      });
-    }
+
+    identity({
+      email: mail,
+      firstName: firstName,
+      lastName: lastName,
+      identifiers: [
+        {
+          id: mail,
+          provider: process?.env?.NEXT_PUBLIC_IDENTITY_PROVIDER ?? "",
+        },
+      ],
+      extensionData: { NewsletterRegistration: "yes" }
+    });
+
     setFormSent(true);
   }
 
